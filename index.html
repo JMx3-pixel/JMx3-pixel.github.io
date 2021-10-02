@@ -1,11 +1,43 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
         <title>Hola mundo</title>
+        
     </head>
     <body>
-        <iframe width='100%' height='400px' src="https://api.mapbox.com/styles/v1/jmx3/ckuab1ror6ke219qjnwql47qg.html?title=false&access_token=pk.eyJ1Ijoiam14MyIsImEiOiJja3U4dDg1N2owMDd3MnVyczZ6eGVrejBrIn0.bdRyBhkl-jZwGO5A53t1Rw&zoomwheel=false#16.59/10.11012/-84.466913/0/47" title="Basic" style="border:none;"></iframe>
-        <h1>Hello World</h1>
-        <p>I'm hosted with GitHub Pages.</p>
+        <style>
+            .mapboxgl-popup {
+            max-width: 400px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            }
+        </style>
+        <div id='map' style='width: 600px; height: 500px;'></div>
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1Ijoiam14MyIsImEiOiJja3U4dDg1N2owMDd3MnVyczZ6eGVrejBrIn0.bdRyBhkl-jZwGO5A53t1Rw';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [-84.4672777, 10.1111384],
+                zoom: 15
+            });
+            map.on('load', () => {
+                map.addSource('earthquakes', {
+                type: 'geojson',
+                data: './buildings.geojson'
+                });
+                map.addLayer({
+                    'id': 'earthquakes-layer',
+                    'type': 'fill',
+                    'source': 'earthquakes',
+                    'paint': {
+                        'fill-color': 'rgba(200, 100, 240, 0.4)',
+                        'fill-outline-color': 'rgba(200, 100, 240, 1)'
+                    }
+                });
+            });
+        </script>
+        
     </body>
 </html>
