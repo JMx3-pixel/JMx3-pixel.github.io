@@ -75,6 +75,23 @@
                 });
  
 
+                map.on('mouseenter', 'landcover-layer', () => {
+                map.getCanvas().style.cursor = 'pointer';
+                });
+ 
+
+                map.on('mouseleave', 'landcover-layer', () => {
+                map.getCanvas().style.cursor = '';
+                });
+                map.on('click', 'landcover-layer', (e) => {
+                new mapboxgl.Popup()
+.               setLngLat(e.lngLat)
+.               setHTML("Casa " + e.features[0].properties.name)
+                
+.               addTo(map);
+                });
+ 
+
                 map.on('mouseenter', 'casas-layer', () => {
                 map.getCanvas().style.cursor = 'pointer';
                 });
