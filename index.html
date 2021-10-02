@@ -23,18 +23,65 @@
                 zoom: 15
             });
             map.on('load', () => {
-                map.addSource('earthquakes', {
+                map.addSource('casas', {
                 type: 'geojson',
-                data: './buildings.geojson'
+                data: 'https://jmx3-pixel.github.io/buildings.geojson'
                 });
                 map.addLayer({
-                    'id': 'earthquakes-layer',
+                    'id': 'casas-layer',
                     'type': 'fill',
-                    'source': 'earthquakes',
+                    'source': 'casas',
                     'paint': {
                         'fill-color': 'rgba(200, 100, 240, 0.4)',
                         'fill-outline-color': 'rgba(200, 100, 240, 1)'
                     }
+                });
+                map.addSource('landcover', {
+                type: 'geojson',
+                data: 'https://jmx3-pixel.github.io/landcover.geojson'
+                });
+                map.addLayer({
+                    'id': 'landcover-layer',
+                    'type': 'fill',
+                    'source': 'landcover',
+                    'paint': {
+                        'fill-color': 'rgba(222, 191, 207, 0.2)',
+                        'fill-outline-color': 'rgba(200, 100, 240, 1)'
+                    }
+                });
+                map.addSource('cables', {
+                type: 'geojson',
+                data: 'https://jmx3-pixel.github.io/power_lines.geojson'
+                });
+                map.addLayer({
+                    'id': 'power_lines-layer',
+                    'type': 'line',
+                    'source': 'cables',
+                    'layout': {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                    },
+                    'paint': {
+                    'line-color': '#888',
+                    'line-width': 1
+                    }
+                });
+                map.on('click', 'casas-layer', (e) => {
+                new mapboxgl.Popup()
+.               setLngLat(e.lngLat)
+.               setHTML("Casa " + e.features[0].properties.name)
+                
+.               addTo(map);
+                });
+ 
+
+                map.on('mouseenter', 'casas-layer', () => {
+                map.getCanvas().style.cursor = 'pointer';
+                });
+ 
+
+                map.on('mouseleave', 'casas-layer', () => {
+                map.getCanvas().style.cursor = '';
                 });
             });
         </script>
