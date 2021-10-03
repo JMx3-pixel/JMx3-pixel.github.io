@@ -23,6 +23,11 @@
                 zoom: 15
             });
             map.on('load', () => {
+                /*map.loadImage(
+                    'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+                    (error, image) => {
+                    if (error) throw error;
+                    map.addImage('custom-marker', image);*/
                 map.addSource('casas', {
                 type: 'geojson',
                 data: 'https://jmx3-pixel.github.io/buildings.geojson'
@@ -73,8 +78,25 @@
                 
 .               addTo(map);
                 });
- 
-
+                map.addSource('puntos', {
+                type: 'geojson',
+                data: 'https://jmx3-pixel.github.io/puntos.geojson'
+                });
+                map.addLayer({
+                    'id': 'puntos-layer',
+                    'type': 'symbol',
+                    'source': 'puntos',
+                    'layout': {
+                        'icon-image': 'custom-marker',
+                        'text-field': ['get', 'title'],
+                        'text-font': [
+                            'Open Sans Semibold',
+                            'Arial Unicode MS Bold'
+                        ],
+                        'text-offset': [0, 1.25],
+                        'text-anchor': 'top'
+                    }
+                });
                 map.on('mouseenter', 'landcover-layer', () => {
                 map.getCanvas().style.cursor = 'pointer';
                 });
