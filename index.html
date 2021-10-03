@@ -108,7 +108,7 @@
                 map.on('click', 'landcover-layer', (e) => {
                 new mapboxgl.Popup()
 .               setLngLat(e.lngLat)
-.               setHTML("Lote baldío " + e.features[0].properties.name)
+.               setHTML(e.features[0].properties.residential + ' ' + e.features[0].properties.name)
                 
 .               addTo(map);
                 });
