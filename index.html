@@ -156,7 +156,7 @@
                 map.on('click', 'power_lines-layer', (e) => {
                 new mapboxgl.Popup()
 .               setLngLat(e.lngLat)
-.               setHTML(e.features[0].properties.name)
+.               setHTML(e.features[0].properties.name + " del " + e.features[0].properties.operator)
                 
 .               addTo(map);
                 });
@@ -174,7 +174,7 @@
                     
                     new mapboxgl.Popup()
                     .setLngLat(coordinates)
-                    .setHTML(description)
+                    .setHTML(description + " de " + e.features[0].properties.office)
                     .addTo(map);
                     });
                     
