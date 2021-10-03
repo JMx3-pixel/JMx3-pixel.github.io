@@ -26,7 +26,7 @@
             mapboxgl.accessToken = 'pk.eyJ1Ijoiam14MyIsImEiOiJja3U4dDg1N2owMDd3MnVyczZ6eGVrejBrIn0.bdRyBhkl-jZwGO5A53t1Rw';
             var map = new mapboxgl.Map({
                 container: 'map',
-                style: 'mapbox://styles/jmx3/ckuakrsmu5icf18m1wqlkkjvd',
+                style: 'mapbox://styles/mapbox/streets-v11',
                 center: [-84.4673779, 10.1100157],
                 zoom: 16,
                 pitch: 35,
@@ -34,15 +34,16 @@
             });
             map.on('load', () => {
                     map.loadImage(
-                    'https://jmx3-pixel.github.io/marker.png',
+                    'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
                     (error, image) => {
                     if (error) throw error;
                     map.addImage('custom-marker', image);
+                    });
                 map.addSource('puntos', {
                 type: 'geojson',
                 data: 'https://jmx3-pixel.github.io/puntos.geojson'
                 });
-            });
+            
                 map.addLayer({
                     'id': 'puntos-layer',
                     'type': 'symbol',
@@ -107,7 +108,7 @@
                     },
                     'paint': {
                     'line-color': '#888',
-                    'line-width': 2.5
+                    'line-width': 2.8
                     }
                 });
                 map.on('click', 'casas-layer', (e) => {
@@ -159,6 +160,48 @@
                 
 .               addTo(map);
                 });
+                map.on('click', 'puntos-layer', (e) => {
+// Copy coordinates array.
+                    const coordinates = e.features[0].geometry.coordinates.slice();
+                    const description = e.features[0].properties.name;
+                    
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+                    
+                    new mapboxgl.Popup()
+                    .setLngLat(coordinates)
+                    .setHTML(description)
+                    .addTo(map);
+                    });
+                    
+                    // Change the cursor to a pointer when the mouse is over the places layer.
+                    map.on('mouseenter', 'puntos-layer', () => {
+                    map.getCanvas().style.cursor = 'pointer';
+                    });
+                    
+                    // Change it back to a pointer when it leaves.
+                    map.on('mouseleave', 'puntos-layer', () => {
+                    map.getCanvas().style.cursor = '';
+                    });
+                /*map.on('mouseenter', 'puntos-layer', () => {
+                map.getCanvas().style.cursor = 'pointer';
+                });
+ 
+
+                map.on('mouseleave', 'puntos-layer, () => {
+                map.getCanvas().style.cursor = '';
+                });
+                map.on('click', 'puntos-layer', (e) => {
+                new mapboxgl.Popup()
+.               setLngLat(e.lngLat)
+.               setHTML(e.features[0].properties.name)
+                
+.               addTo(map);
+                });*/
             });
         </script>
         <h1>Proyecto 1 Residencial Los Lirios</h1>
